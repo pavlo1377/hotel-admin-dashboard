@@ -29,7 +29,7 @@
 
 ## 🚀 Live Demo
 
-> *Add link here once deployed*
+> *[See the website](https://hotel-admin-dashboard-tawny.vercel.app/)*
 
 ---
 
