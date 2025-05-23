@@ -1,11 +1,24 @@
-import { createContext, useContext, useEffect } from "react";
+import React, {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+} from "react";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 
-const DarkModeContext = createContext();
+type DarkModeContextObj = {
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
+};
 
-function DarkModeProvider({ children }) {
+const DarkModeContext = createContext<DarkModeContextObj>({
+  isDarkMode: false,
+  toggleDarkMode: () => {},
+});
+
+const DarkModeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useLocalStorageState(
-    window.matchMedia("(prefers-color-schema:dark)").matches,
+    window.matchMedia("(prefers-color-scheme:dark)").matches,
     "isDarkMode"
   );
 
@@ -23,7 +36,7 @@ function DarkModeProvider({ children }) {
   );
 
   function toggleDarkMode() {
-    setIsDarkMode((isDark) => !isDark);
+    setIsDarkMode((isDark: boolean) => !isDark);
   }
 
   return (
@@ -31,12 +44,10 @@ function DarkModeProvider({ children }) {
       {children}
     </DarkModeContext.Provider>
   );
-}
+};
 
 function useDarkMode() {
   const context = useContext(DarkModeContext);
-  if (context === undefined)
-    throw new Error("Dark mode context was used outside of DarkModeProvider");
   return context;
 }
 
